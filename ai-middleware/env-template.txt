@@ -1,0 +1,15 @@
+PORT=3001
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_MODEL=llama3.1
+
+# Alternative models you can use:
+# OLLAMA_MODEL=mistral
+# OLLAMA_MODEL=codellama
+# OLLAMA_MODEL=llama3.2
+# OLLAMA_MODEL=qwen2.5
+
+# Backend API configuration (update these URLs to match your actual backend)
+BACKEND_API_URL=https://your-api.com/api
+
+# Copy this file to .env and update the values:
+# cp env-template.txt .env 
