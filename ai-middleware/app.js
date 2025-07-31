@@ -19,7 +19,9 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.use(express.json());
+// Body parsing middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Health check endpoint for frontend connection testing
 app.get('/api/health', (req, res) => {
@@ -35,8 +37,11 @@ app.get('/api/health', (req, res) => {
 // Add request logging middleware
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  console.log('Content-Type:', req.headers['content-type']);
   if (req.body && Object.keys(req.body).length > 0) {
     console.log('Request body:', JSON.stringify(req.body, null, 2));
+  } else {
+    console.log('Request body is empty or undefined');
   }
   next();
 });
@@ -60,7 +65,8 @@ app.use('*', (req, res) => {
     error: 'Route not found',
     availableRoutes: [
       'GET /api/health',
-      'POST /api/chat'
+      'POST /api/chat',
+      'POST /api/chat/stream'
     ]
   });
 });
@@ -71,6 +77,7 @@ app.listen(PORT, () => {
   console.log(`AI middleware running on port ${PORT}`);
   console.log(`Health check: http://localhost:${PORT}/api/health`);
   console.log(`Chat endpoint: http://localhost:${PORT}/api/chat`);
+  console.log(`Streaming endpoint: http://localhost:${PORT}/api/chat/stream`);
   console.log(`CORS enabled for frontend development servers`);
 });
 
